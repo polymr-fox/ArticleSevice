@@ -2,6 +2,7 @@ package com.mrfox.senyast4745.articleservice.dao;
 
 
 import com.mrfox.senyast4745.articleservice.model.ArticleModel;
+import com.mrfox.senyast4745.articleservice.model.Role;
 import com.mrfox.senyast4745.articleservice.model.TagModel;
 import com.mrfox.senyast4745.articleservice.model.UserModel;
 import com.mrfox.senyast4745.articleservice.repostory.ArticleRepository;
@@ -47,23 +48,24 @@ public class ArticlesDAO {
 
     }
 
-    public ArticleModel updateRating(Long id, int rating) {
-        return updateAll(id, null, null, null, rating);
+    public ArticleModel updateRating(Long id, Long userId, int rating) throws IllegalAccessException {
+        return updateAll(id, userId, null, null, null, rating);
     }
 
-    public ArticleModel updateName(Long id, String articleName) {
-        return updateAll(id, articleName, null, null, 0);
+    public ArticleModel updateName(Long id, Long userId, String articleName) throws IllegalAccessException {
+        return updateAll(id, userId, articleName, null, null, 0);
     }
 
-    public ArticleModel updateAll(Long id,  String articleName, String articleText, String[] tags, int rating){
+    public ArticleModel updateAll(Long id, Long userId, String articleName, String articleText, String[] tags, int rating) throws IllegalAccessException {
+        checkAccess(id, userId);
         ArticleModel tmp = articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Article with id " + id + " not exist."));
-        if(articleName != null){
+        if (articleName != null) {
             tmp.setArticleName(articleName);
         }
-        if(articleText != null){
+        if (articleText != null) {
             tmp.setArticleText(articleText);
         }
-        if(tags!= null){
+        if (tags != null) {
             tmp.setTags(tags);
         }
         int articleRating = tmp.getRating();
@@ -73,7 +75,7 @@ public class ArticlesDAO {
 
     }
 
-    public Iterable<ArticleModel> findAll(){
+    public Iterable<ArticleModel> findAll() {
         Iterable<ArticleModel> articleModels = articleRepository.findAll();
         if (!articleModels.iterator().hasNext()) {
             throw new IllegalArgumentException("Articles not exist yet.");
@@ -89,6 +91,7 @@ public class ArticlesDAO {
         }
         return articleModels;
     }
+
     private Iterable<ArticleModel> findAllByCreatorIdOrderByRating(Long creatorId) {
         Iterable<ArticleModel> articleModels = articleRepository.findAllByCreatorIdOrderByRating(creatorId);
         if (!articleModels.iterator().hasNext()) {
@@ -107,11 +110,11 @@ public class ArticlesDAO {
 
     public Iterable<ArticleModel> findAllByCreatorFullName(String fullName) {
         Iterable<UserModel> userModels = userRepository.findByFullName(fullName);
-        ArrayList <ArticleModel> articleModels = new ArrayList<>();
+        ArrayList<ArticleModel> articleModels = new ArrayList<>();
         for (UserModel u : userModels) {
-             findAllByCreatorId(u.getUserId()).forEach(articleModels::add);
+            findAllByCreatorId(u.getUserId()).forEach(articleModels::add);
         }
-        if(articleModels.isEmpty()){
+        if (articleModels.isEmpty()) {
             throw new IllegalArgumentException("Users with full " + fullName + " has not created an article yet.");
         }
         return articleModels;
@@ -119,22 +122,28 @@ public class ArticlesDAO {
 
     public Iterable<ArticleModel> findAllByCreatorFullNameOrderByRating(String fullName) {
         Iterable<UserModel> userModels = userRepository.findByFullName(fullName);
-        ArrayList <ArticleModel> articleModels = new ArrayList<>();
+        ArrayList<ArticleModel> articleModels = new ArrayList<>();
         for (UserModel u : userModels) {
             findAllByCreatorIdOrderByRating(u.getUserId()).forEach(articleModels::add);
         }
-        if(articleModels.isEmpty()){
+        if (articleModels.isEmpty()) {
             throw new IllegalArgumentException("Users with full " + fullName + " has not created an article yet.");
         }
         return articleModels;
     }
 
-    public void deleteById(Long id){
-        try {
-            articleRepository.deleteById(id);
-        } catch (Exception e){
-            throw new IllegalArgumentException(e);
+    public void deleteById(Long id, Long userId) throws IllegalAccessException {
+        checkAccess(id, userId);
+        articleRepository.deleteById(id);
+    }
+
+    private void checkAccess(Long id, Long creatorId) throws IllegalAccessException {
+        ArticleModel tmp = articleRepository.findById(id).orElse(null);
+        UserModel tmpUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Incorrect user with user id " + id));
+        if (tmp == null || (!tmp.getCreatorId().equals(creatorId) && tmpUser.getRole() != (Role.MODERATOR))) {
+            throw new IllegalAccessException();
         }
+
     }
 
     /*public Iterable<ArticleModel> findAllByTag(String tags){
