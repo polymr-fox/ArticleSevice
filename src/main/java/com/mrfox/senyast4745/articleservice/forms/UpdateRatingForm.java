@@ -1,11 +1,15 @@
 package com.mrfox.senyast4745.articleservice.forms;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UpdateRatingForm {
 
     private Long id;
     private int rating;
 
-    public UpdateRatingForm(Long id, int rating) {
+    @JsonCreator
+    public UpdateRatingForm(@JsonProperty("id")Long id, @JsonProperty("rating")int rating) {
         this.id = id;
         this.rating = rating;
     }

@@ -1,5 +1,8 @@
 package com.mrfox.senyast4745.articleservice.forms;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UpdateAllForm {
 
     private Long id;
@@ -7,7 +10,9 @@ public class UpdateAllForm {
     private String text;
     private String[] tags;
 
-    public UpdateAllForm(Long id, String articleName, String text, String[] tags) {
+    @JsonCreator
+    public UpdateAllForm(@JsonProperty("id")Long id, @JsonProperty("articleName")String articleName,
+                         @JsonProperty("text")String text,@JsonProperty("tags") String[] tags) {
         this.id = id;
         this.articleName = articleName;
         this.text = text;

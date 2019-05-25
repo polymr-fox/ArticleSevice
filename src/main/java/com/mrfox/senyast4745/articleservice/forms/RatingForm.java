@@ -1,9 +1,13 @@
 package com.mrfox.senyast4745.articleservice.forms;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class RatingForm {
     private int rating;
 
-    public RatingForm(int rating) {
+    @JsonCreator
+    public RatingForm(@JsonProperty("rating")int rating) {
         this.rating = rating;
     }
 

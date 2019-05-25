@@ -1,5 +1,8 @@
 package com.mrfox.senyast4745.articleservice.forms;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CreateForm {
 
     private String articleName;
@@ -7,7 +10,9 @@ public class CreateForm {
     private String[] tags;
     private long creatorId;
 
-    public CreateForm(String articleName, String text, String[] tags, long creatorId) {
+    @JsonCreator
+    public CreateForm(@JsonProperty("articleName")String articleName,@JsonProperty("text") String text,
+                      @JsonProperty("tags")String[] tags, @JsonProperty("creatorId")long creatorId) {
         this.articleName = articleName;
         this.text = text;
         this.tags = tags;
