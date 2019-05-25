@@ -102,6 +102,14 @@ public class ArticlesDAO {
         return articleModels;
     }
 
+    public void deleteById(Long id){
+        try {
+            articleRepository.deleteById(id);
+        } catch (Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     /*public Iterable<ArticleModel> findAllByTag(String tags){
 
     }*/
