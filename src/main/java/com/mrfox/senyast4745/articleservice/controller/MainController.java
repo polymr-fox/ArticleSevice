@@ -45,7 +45,7 @@ public class MainController {
             return ResponseEntity.ok(articlesDAO.findAll());
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "DataBase is empty.", "/read_by_usr" )));
+                    "DataBase is empty.", "/read" )));
 
         }
     }
@@ -57,19 +57,19 @@ public class MainController {
             return ResponseEntity.ok(articlesDAO.findAllByCreatorFullName(form.getFullName()));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "Bad Request with: " + gson.toJson(form), "/read/usr" )));
 
         }
     }
 
-    @RequestMapping(value = "/read/rth", method = RequestMethod.POST)
+    @RequestMapping(value = "/read/rtg", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity readByRating(@RequestParam RatingForm form){
         try {
             return ResponseEntity.ok(articlesDAO.findAllByRating(form.getRating()));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "Bad Request with: " + gson.toJson(form), "/read/rtg" )));
 
         }
     }
@@ -82,7 +82,7 @@ public class MainController {
             return ResponseEntity.ok(articlesDAO.updateRating(form.getId(), form.getRating()));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "Bad Request with: " + gson.toJson(form), "/upd/rtg" )));
 
         }
     }
@@ -95,7 +95,7 @@ public class MainController {
             return ResponseEntity.ok(articlesDAO.updateAll(form.getId(), form.getArticleName(), form.getText(), form.getTags(), 0));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "Bad Request with: " + gson.toJson(form), "/upd" )));
 
         }
     }
@@ -109,7 +109,7 @@ public class MainController {
             return ResponseEntity.ok().build();
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "Bad Request with: " + gson.toJson(form), "/delete" )));
 
         }
     }
