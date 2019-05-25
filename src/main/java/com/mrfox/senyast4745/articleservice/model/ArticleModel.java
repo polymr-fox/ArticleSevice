@@ -1,6 +1,8 @@
 package com.mrfox.senyast4745.articleservice.model;
 
 
+import com.mrfox.senyast4745.articleservice.converters.SimpleConverter;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -23,7 +25,8 @@ public class ArticleModel {
     private String articleText;
 
     @Column(name = "tags", nullable = false)
-    private String tags;
+    @Convert(converter = SimpleConverter.class)
+    private String[] tags;
 
     @Column(name = "rating", nullable = false)
     private int rating;
@@ -37,7 +40,7 @@ public class ArticleModel {
         super();
     }
 
-    public ArticleModel(Long creatorId, String articleName, String articleText, String tags, int rating, Date date) {
+    public ArticleModel(Long creatorId, String articleName, String articleText, String[] tags, int rating, Date date) {
         this.creatorId = creatorId;
         this.articleName = articleName;
         this.articleText = articleText;
@@ -74,15 +77,15 @@ public class ArticleModel {
         return articleText;
     }
 
-    public void setArticleText(String articleDescription) {
-        this.articleText = articleDescription;
+    public void setArticleText(String articleText) {
+        this.articleText = articleText;
     }
 
-    public String getTags() {
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 

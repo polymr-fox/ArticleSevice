@@ -1,5 +1,6 @@
 package com.mrfox.senyast4745.articleservice.model;
 
+import com.mrfox.senyast4745.articleservice.converters.SimpleConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,8 @@ public class UserModel implements UserDetails {
     private String mail;
 
     @Column(name = "links", unique = true)
-    private String links;
+    @Convert(converter = SimpleConverter.class)
+    private String[] links;
 
     @Column(name = "create_at", nullable = false)
     private Date createAt;
@@ -49,7 +51,7 @@ public class UserModel implements UserDetails {
         super();
     }
 
-    public UserModel(String fullName, String username, String password, String mail, String links, Date createAt, Date updateAt, Date deleteAt, String role) {
+    public UserModel(String fullName, String username, String password, String mail, String[] links, Date createAt, Date updateAt, Date deleteAt, String role) {
         this.fullName = fullName;
         this.username = username;
         this.password = password;
@@ -79,6 +81,58 @@ public class UserModel implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String[] getLinks() {
+        return links;
+    }
+
+    public void setLinks(String[] links) {
+        this.links = links;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public Date getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(Date deleteAt) {
+        this.deleteAt = deleteAt;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
@@ -116,55 +170,5 @@ public class UserModel implements UserDetails {
         return username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getLinks() {
-        return links;
-    }
-
-    public void setLinks(String links) {
-        this.links = links;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public Date getDeleteAt() {
-        return deleteAt;
-    }
-
-    public void setDeleteAt(Date deleteAt) {
-        this.deleteAt = deleteAt;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

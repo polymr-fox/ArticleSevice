@@ -4,10 +4,10 @@ public class CreateForm {
 
     private String articleName;
     private String text;
-    private String tags;
+    private String[] tags;
     private long creatorId;
 
-    public CreateForm(String articleName, String text, String tags, long creatorId) {
+    public CreateForm(String articleName, String text, String[] tags, long creatorId) {
         this.articleName = articleName;
         this.text = text;
         this.tags = tags;
@@ -30,11 +30,11 @@ public class CreateForm {
         this.text = text;
     }
 
-    public String getTags() {
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 

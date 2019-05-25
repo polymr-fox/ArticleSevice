@@ -1,6 +1,5 @@
 package com.mrfox.senyast4745.articleservice.config;
 
-import com.mrfox.senyast4745.articleservice.model.Role;
 import com.mrfox.senyast4745.articleservice.security.jwt.JwtConfigurer;
 import com.mrfox.senyast4745.articleservice.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

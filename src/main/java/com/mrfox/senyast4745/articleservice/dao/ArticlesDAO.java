@@ -31,12 +31,11 @@ public class ArticlesDAO {
         this.userRepository = userRepository;
     }
 
-    public ArticleModel create(Long creatorId, String articleName, String articleText, String tags, int rating, Date date) {
-        String[] strings = tags.split(";");
-        if (strings.length == 0) {
+    public ArticleModel create(Long creatorId, String articleName, String articleText, String[] tags, int rating, Date date) {
+        if (tags.length == 0) {
             throw new IllegalArgumentException("No tags found");
         }
-        for (String tmp : strings) {
+        for (String tmp : tags) {
             Iterable<TagModel> tmpTag = tagsRepository.findAllByTagName(tmp);
             if (!tmpTag.iterator().hasNext()) {
                 tagsRepository.save(new TagModel(tmp));
@@ -56,7 +55,7 @@ public class ArticlesDAO {
         return updateAll(id, articleName, null, null, 0);
     }
 
-    public ArticleModel updateAll(Long id,  String articleName, String articleText, String tags, int rating){
+    public ArticleModel updateAll(Long id,  String articleName, String articleText, String[] tags, int rating){
         ArticleModel tmp = articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Article with id " + id + " not exist."));
         if(articleName != null){
             tmp.setArticleName(articleName);

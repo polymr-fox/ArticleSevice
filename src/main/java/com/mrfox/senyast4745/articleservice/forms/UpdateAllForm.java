@@ -5,9 +5,9 @@ public class UpdateAllForm {
     private Long id;
     private String articleName;
     private String text;
-    private String tags;
+    private String[] tags;
 
-    public UpdateAllForm(Long id, String articleName, String text, String tags) {
+    public UpdateAllForm(Long id, String articleName, String text, String[] tags) {
         this.id = id;
         this.articleName = articleName;
         this.text = text;
@@ -38,11 +38,11 @@ public class UpdateAllForm {
         this.text = text;
     }
 
-    public String getTags() {
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 }
