@@ -74,7 +74,16 @@ public class ArticlesDAO {
 
     }
 
-    public Iterable<ArticleModel> findAllByCreatorId(Long creatorId) {
+    public Iterable<ArticleModel> findAll(){
+        Iterable<ArticleModel> articleModels = articleRepository.findAll();
+        if (!articleModels.iterator().hasNext()) {
+            throw new IllegalArgumentException("Articles not exist yet.");
+        }
+        return articleModels;
+    }
+
+
+    private Iterable<ArticleModel> findAllByCreatorId(Long creatorId) {
         Iterable<ArticleModel> articleModels = articleRepository.findAllByCreatorId(creatorId);
         if (!articleModels.iterator().hasNext()) {
             throw new IllegalArgumentException("User with id " + creatorId + " has not created an article yet.");

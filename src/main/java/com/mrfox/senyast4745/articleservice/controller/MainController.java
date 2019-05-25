@@ -1,12 +1,10 @@
 package com.mrfox.senyast4745.articleservice.controller;
 
 import com.mrfox.senyast4745.articleservice.dao.ArticlesDAO;
-import com.mrfox.senyast4745.articleservice.forms.CreateJsonForm;
-import com.mrfox.senyast4745.articleservice.forms.ExceptionModel;
-import com.mrfox.senyast4745.articleservice.forms.FullNameForm;
-import com.mrfox.senyast4745.articleservice.forms.UpdateRatingForm;
+import com.mrfox.senyast4745.articleservice.forms.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
@@ -26,9 +24,10 @@ public class MainController {
         this.articlesDAO = articlesDAO;
     }
 
+    @PreAuthorize("@securityService.hasPermission('ADMIN,TEACHER,STUDENT')")
     @RequestMapping(value = "/create" , method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity create(@RequestBody CreateJsonForm jsonForm){
+    ResponseEntity create(@RequestBody CreateForm jsonForm){
         try {
             return ResponseEntity.ok(articlesDAO.create(jsonForm.getCreatorId(), jsonForm.getArticleName(), jsonForm.getText()
                     , jsonForm.getTags(), 0, new Date()));
@@ -37,10 +36,21 @@ public class MainController {
                     "Bad Request with: " + gson.toJson(jsonForm), "/create" )));
 
         }
-
     }
 
-    @RequestMapping(value = "/read_by_usr", method = RequestMethod.POST)
+    @RequestMapping(value = "/read", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity readAll(@RequestParam FullNameForm form){
+        try {
+            return ResponseEntity.ok(articlesDAO.findAllByCreatorFullName(form.getFullName()));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
+                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+
+        }
+    }
+
+    @RequestMapping(value = "/read/usr", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity readByFullName(@RequestParam FullNameForm form){
         try {
@@ -50,10 +60,22 @@ public class MainController {
                     "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
 
         }
-
     }
 
-    @RequestMapping(value = "/upd_rtg", method = RequestMethod.POST)
+    @RequestMapping(value = "/read/rth", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity readByRating(@RequestParam RatingForm form){
+        try {
+            return ResponseEntity.ok(articlesDAO.findAllByRating(form.getRating()));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
+                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+
+        }
+    }
+
+    @PreAuthorize("@securityService.hasPermission('ADMIN,TEACHER,STUDENT')")
+    @RequestMapping(value = "/upd/rtg", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity updateRating(@RequestParam UpdateRatingForm form){
         try {
@@ -63,7 +85,33 @@ public class MainController {
                     "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
 
         }
+    }
 
+    @PreAuthorize("@securityService.hasPermission('ADMIN,TEACHER,STUDENT')")
+    @RequestMapping(value = "/upd", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity updateAll(@RequestParam UpdateAllForm form){
+        try {
+            return ResponseEntity.ok(articlesDAO.updateAll(form.getId(), form.getArticleName(), form.getText(), form.getTags(), 0));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
+                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+
+        }
+    }
+
+    @PreAuthorize("@securityService.hasPermission('ADMIN,TEACHER,STUDENT')")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity deleteById(@RequestParam MinimalForm form){
+        try {
+            articlesDAO.deleteById(form.getId());
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
+                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+
+        }
     }
 
 

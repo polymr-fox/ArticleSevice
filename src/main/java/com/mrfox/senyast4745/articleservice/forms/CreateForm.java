@@ -1,13 +1,13 @@
 package com.mrfox.senyast4745.articleservice.forms;
 
-public class CreateJsonForm {
+public class CreateForm {
 
     private String articleName;
     private String text;
     private String tags;
     private long creatorId;
 
-    public CreateJsonForm(String articleName, String text, String tags, long creatorId) {
+    public CreateForm(String articleName, String text, String tags, long creatorId) {
         this.articleName = articleName;
         this.text = text;
         this.tags = tags;
