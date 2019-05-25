@@ -62,6 +62,17 @@ public class MainController {
         }
     }
 
+    @RequestMapping(value = "/read/usr/rtg", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity readByFullNameOrderByRating(@RequestParam FullNameForm form){
+        try {
+            return ResponseEntity.ok(articlesDAO.findAllByCreatorFullNameOrderByRating(form.getFullName()));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
+                    "Bad Request with: " + gson.toJson(form), "/read/usr/rtg" )));
+        }
+    }
+
     @RequestMapping(value = "/read/rtg", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity readByRating(@RequestParam RatingForm form){

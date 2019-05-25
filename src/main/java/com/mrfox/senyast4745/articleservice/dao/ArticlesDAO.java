@@ -89,6 +89,13 @@ public class ArticlesDAO {
         }
         return articleModels;
     }
+    private Iterable<ArticleModel> findAllByCreatorIdOrderByRating(Long creatorId) {
+        Iterable<ArticleModel> articleModels = articleRepository.findAllByCreatorIdOrderByRating(creatorId);
+        if (!articleModels.iterator().hasNext()) {
+            throw new IllegalArgumentException("User with id " + creatorId + " has not created an article yet.");
+        }
+        return articleModels;
+    }
 
     public Iterable<ArticleModel> findAllByRating(int rating) {
         Iterable<ArticleModel> articleModels = articleRepository.findAllByRating(rating);
@@ -103,6 +110,18 @@ public class ArticlesDAO {
         ArrayList <ArticleModel> articleModels = new ArrayList<>();
         for (UserModel u : userModels) {
              findAllByCreatorId(u.getUserId()).forEach(articleModels::add);
+        }
+        if(articleModels.isEmpty()){
+            throw new IllegalArgumentException("Users with full " + fullName + " has not created an article yet.");
+        }
+        return articleModels;
+    }
+
+    public Iterable<ArticleModel> findAllByCreatorFullNameOrderByRating(String fullName) {
+        Iterable<UserModel> userModels = userRepository.findByFullName(fullName);
+        ArrayList <ArticleModel> articleModels = new ArrayList<>();
+        for (UserModel u : userModels) {
+            findAllByCreatorIdOrderByRating(u.getUserId()).forEach(articleModels::add);
         }
         if(articleModels.isEmpty()){
             throw new IllegalArgumentException("Users with full " + fullName + " has not created an article yet.");

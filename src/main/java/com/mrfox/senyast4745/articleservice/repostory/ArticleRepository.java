@@ -11,6 +11,7 @@ import java.util.Date;
 public interface ArticleRepository extends CrudRepository<ArticleModel, Long> {
     // todo Iterable<ArticleModel> findAllByTags(String tag);
     Iterable< ArticleModel> findAllByCreatorId(Long id);
+    Iterable< ArticleModel> findAllByCreatorIdOrderByRating(Long id);
     Iterable<ArticleModel> findByArticleName(String name);
     Iterable<ArticleModel> findAllByDate(Date date);
     Iterable<ArticleModel> findAllByRating(Integer rating);
