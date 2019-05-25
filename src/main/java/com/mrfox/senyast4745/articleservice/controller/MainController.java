@@ -40,12 +40,12 @@ public class MainController {
 
     @RequestMapping(value = "/read", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity readAll(@RequestParam FullNameForm form){
+    ResponseEntity readAll(){
         try {
-            return ResponseEntity.ok(articlesDAO.findAllByCreatorFullName(form.getFullName()));
+            return ResponseEntity.ok(articlesDAO.findAll());
         } catch (Exception e){
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(form), "/read_by_usr" )));
+                    "DataBase is empty.", "/read_by_usr" )));
 
         }
     }
