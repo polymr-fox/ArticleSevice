@@ -4,22 +4,17 @@ import com.mrfox.senyast4745.articleservice.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 @Component
@@ -43,11 +38,11 @@ public class JwtTokenProvider {
     @PostConstruct
     protected void init() {
         //If you want to use your password make file secret.properties
-        // and add password=your_password
+        // and add secretKey=your_password
         try{
-            FileInputStream fis = new FileInputStream("src/main/resources/config.properties");
+            FileInputStream fis = new FileInputStream("src/main/resources/secret.properties");
             property.load(fis);
-            secretKey = property.getProperty("password");
+            secretKey = property.getProperty("secretKey");
         } catch (IOException ignored){}
 
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
