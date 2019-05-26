@@ -35,15 +35,6 @@ public class JwtTokenProvider {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostConstruct
-    protected void init() {
-        //If you want to use your password make file secret.properties
-        // and add secretKey=your_password
-        LOGGER.info("My secret Key is " + secretKey);
-        //secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
-
-
     Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
