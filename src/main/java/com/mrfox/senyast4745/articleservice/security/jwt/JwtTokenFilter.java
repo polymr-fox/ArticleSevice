@@ -37,9 +37,11 @@ public class JwtTokenFilter extends GenericFilterBean {
         }catch (InvalidJwtAuthenticationException e){
             ExceptionModel ex = new ExceptionModel(403, "Forbidden",
                     e.getMessage(), ((HttpServletRequest) req).getRequestURI());
-            /*Gson gson = new Gson();
+            Gson gson = new Gson();
             String json = gson.toJson(ex);
-            res.getWriter().append(json);*/
+            try {
+                res.getWriter().append(json);
+            } catch (Exception ignore){}
         }
         filterChain.doFilter(req, res);
     }
