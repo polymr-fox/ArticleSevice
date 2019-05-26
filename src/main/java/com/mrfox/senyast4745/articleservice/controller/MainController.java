@@ -27,7 +27,7 @@ public class MainController {
     //@PreAuthorize("@securityService.hasPermission('ADMIN')")
     //@PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     public @ResponseBody
     ResponseEntity create(@RequestBody CreateForm jsonForm) {
         try {
@@ -91,7 +91,7 @@ public class MainController {
     }
 
     //@PreAuthorize("@securityService.hasPermission('ADMIN')")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update/rating", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity updateRating(@RequestBody UpdateRatingForm form) {
@@ -109,7 +109,7 @@ public class MainController {
 
 
     //@PreAuthorize("@securityService.hasPermission('ADMIN')")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity updateAll(@RequestBody UpdateAllForm form) {
@@ -126,7 +126,7 @@ public class MainController {
     }
 
     //@PreAuthorize("@securityService.hasPermission('ADMIN')")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity deleteById(@RequestBody MinimalForm form) {
