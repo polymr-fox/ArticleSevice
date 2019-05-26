@@ -12,7 +12,7 @@ import java.util.Collection;
 public class SecurityRoleComponent {
 
 
-        public boolean hasPermission( Role...permissions){
+        public boolean hasPermission(Role...permissions){
             // loop over each submitted role and validate the user has at least one
             Collection<? extends GrantedAuthority> userAuthorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
             for( Role permission : permissions){

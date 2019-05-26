@@ -1,13 +1,9 @@
 package com.mrfox.senyast4745.articleservice.security.jwt;
 
-
-import com.google.common.annotations.Beta;
 import com.google.gson.Gson;
 import com.mrfox.senyast4745.articleservice.forms.ExceptionModel;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -41,11 +37,10 @@ public class JwtTokenFilter extends GenericFilterBean {
         }catch (InvalidJwtAuthenticationException e){
             ExceptionModel ex = new ExceptionModel(403, "Forbidden",
                     e.getMessage(), ((HttpServletRequest) req).getRequestURI());
-            Gson gson = new Gson();
+            /*Gson gson = new Gson();
             String json = gson.toJson(ex);
-            res.getWriter().append(json);
+            res.getWriter().append(json);*/
         }
         filterChain.doFilter(req, res);
     }
-
 }

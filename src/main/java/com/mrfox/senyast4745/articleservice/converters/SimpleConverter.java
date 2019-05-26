@@ -4,7 +4,7 @@ import javax.persistence.AttributeConverter;
 
 public class SimpleConverter implements AttributeConverter<String[], String> {
 
-    private static final String SEPARATOR = " ";
+    private static final String SEPARATOR = ", ";
     @Override
     public String convertToDatabaseColumn(String[] attribute) {
         if (attribute == null || attribute.length==0) {

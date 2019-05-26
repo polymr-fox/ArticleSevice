@@ -24,14 +24,19 @@ public class MainController {
         this.articlesDAO = articlesDAO;
     }
 
-    @PreAuthorize("@securityService.hasPermission('Role.ADMIN.name(),Role.TEACHER.name(),Role.STUDENT.name(),Role.MODERATOR.name()')")
+    //@PreAuthorize("@securityService.hasPermission('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
     public @ResponseBody
     ResponseEntity create(@RequestBody CreateForm jsonForm) {
         try {
             return ResponseEntity.ok(articlesDAO.create(jsonForm.getCreatorId(), jsonForm.getArticleName(), jsonForm.getText()
                     , jsonForm.getTags(), 0, new Date()));
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(403).body(gson.toJson(new ExceptionModel(403, "Forbidden",
+                    "Access denied to create", "/create")));
+        }catch (Exception e) {
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
                     "Bad Request with: " + gson.toJson(jsonForm), "/create")));
 
@@ -85,7 +90,8 @@ public class MainController {
         }
     }
 
-    @PreAuthorize("@securityService.hasPermission('Role.ADMIN.name(),Role.TEACHER.name(),Role.STUDENT.name(),Role.MODERATOR.name()')")
+    //@PreAuthorize("@securityService.hasPermission('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update/rating", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity updateRating(@RequestBody UpdateRatingForm form) {
@@ -102,7 +108,8 @@ public class MainController {
     }
 
 
-    @PreAuthorize("@securityService.hasPermission('Role.ADMIN.name(),Role.TEACHER.name(),Role.STUDENT.name(),Role.MODERATOR.name()')")
+    //@PreAuthorize("@securityService.hasPermission('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity updateAll(@RequestBody UpdateAllForm form) {
@@ -118,7 +125,8 @@ public class MainController {
         }
     }
 
-    @PreAuthorize("@securityService.hasPermission('Role.ADMIN.name(),Role.TEACHER.name(),Role.STUDENT.name(),Role.MODERATOR.name()')")
+    //@PreAuthorize("@securityService.hasPermission('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MOERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity deleteById(@RequestBody MinimalForm form) {
