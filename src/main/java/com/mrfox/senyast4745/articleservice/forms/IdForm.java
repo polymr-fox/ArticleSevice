@@ -3,15 +3,14 @@ package com.mrfox.senyast4745.articleservice.forms;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MinimalForm {
+public class IdForm {
 
     private Long id;
-    private Long userId;
 
     @JsonCreator
-    public MinimalForm(@JsonProperty("id")Long id, @JsonProperty("creatorId") Long userId) {
+    public IdForm(@JsonProperty("id")Long id) {
         this.id = id;
-        this.userId = userId;
+
     }
 
     public Long getId() {
@@ -20,13 +19,5 @@ public class MinimalForm {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }

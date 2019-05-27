@@ -29,16 +29,16 @@ public class MainController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     public @ResponseBody
-    ResponseEntity create(@RequestBody CreateForm jsonForm) {
+    ResponseEntity create(@RequestBody CreateForm form, @RequestHeader(value = "Authorization") String token) {
         try {
-            return ResponseEntity.ok(articlesDAO.create(jsonForm.getCreatorId(), jsonForm.getArticleName(), jsonForm.getText()
-                    , jsonForm.getTags(), 0, new Date()));
+            return ResponseEntity.ok(articlesDAO.create(token, form.getArticleName(), form.getText()
+                    , form.getTags(), 0, new Date()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(403).body(gson.toJson(new ExceptionModel(403, "Forbidden",
                     "Access denied to create", "/create")));
         }catch (Exception e) {
             return ResponseEntity.badRequest().body(gson.toJson(new ExceptionModel(400, "Bad Request",
-                    "Bad Request with: " + gson.toJson(jsonForm), "/create")));
+                    "Bad Request with: " + gson.toJson(form), "/create")));
 
         }
     }
@@ -94,9 +94,9 @@ public class MainController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update/rating", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity updateRating(@RequestBody UpdateRatingForm form) {
+    ResponseEntity updateRating(@RequestBody UpdateRatingForm form, @RequestHeader(value = "Authorization") String token) {
         try {
-            return ResponseEntity.ok(articlesDAO.updateRating(form.getId(), form.getUserId(), form.getRating()));
+            return ResponseEntity.ok(articlesDAO.updateRating(token, form.getId(), form.getRating()));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(403).body(gson.toJson(new ExceptionModel(403, "Forbidden",
                     "Access denied to change state", "/change")));
@@ -112,9 +112,9 @@ public class MainController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity updateAll(@RequestBody UpdateAllForm form) {
+    ResponseEntity updateAll(@RequestBody UpdateAllForm form, @RequestHeader(value = "Authorization") String token) {
         try {
-            return ResponseEntity.ok(articlesDAO.updateAll(form.getId(), form.getUserId() ,form.getArticleName(), form.getText(), form.getTags(), 0));
+            return ResponseEntity.ok(articlesDAO.updateAll(token, form.getId(),form.getArticleName(), form.getText(), form.getTags(), 0));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(403).body(gson.toJson(new ExceptionModel(403, "Forbidden",
                     "Access denied to update", "/update")));
@@ -129,9 +129,9 @@ public class MainController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR') or hasAuthority('STUDENT')")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity deleteById(@RequestBody MinimalForm form) {
+    ResponseEntity deleteById(@RequestBody IdForm form, @RequestHeader(value = "Authorization") String token) {
         try {
-            articlesDAO.deleteById(form.getId(), form.getUserId());
+            articlesDAO.deleteById(token,form.getId());
             return ResponseEntity.ok().build();
         }catch (IllegalArgumentException e) {
             return ResponseEntity.status(403).body(gson.toJson(new ExceptionModel(403, "Forbidden",

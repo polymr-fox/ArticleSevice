@@ -8,15 +8,13 @@ public class CreateForm {
     private String articleName;
     private String text;
     private String[] tags;
-    private long creatorId;
 
     @JsonCreator
-    public CreateForm(@JsonProperty("articleName")String articleName,@JsonProperty("text") String text,
-                      @JsonProperty("tags")String[] tags, @JsonProperty("creatorId")long creatorId) {
+    public CreateForm(@JsonProperty("articleName") String articleName, @JsonProperty("text") String text,
+                      @JsonProperty("tags") String[] tags) {
         this.articleName = articleName;
         this.text = text;
         this.tags = tags;
-        this.creatorId = creatorId;
     }
 
     public String getArticleName() {
@@ -41,13 +39,5 @@ public class CreateForm {
 
     public void setTags(String[] tags) {
         this.tags = tags;
-    }
-
-    public long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(long creatorId) {
-        this.creatorId = creatorId;
     }
 }

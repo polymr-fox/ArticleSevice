@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -25,10 +24,7 @@ public class JwtTokenProvider {
     @Value("${jwt.secretKey:hello}")
     private String secretKey = "hello";
 
-
     private final CustomUserDetailsService userDetailsService;
-
-
 
     @Autowired
     public JwtTokenProvider(CustomUserDetailsService userDetailsService) {
@@ -53,6 +49,7 @@ public class JwtTokenProvider {
     }
 
     boolean validateToken(String token) {
+        LOGGER.info("Key is " + secretKey);
         token = token.trim();
         Jws<Claims> claims = null;
         try {

@@ -6,13 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UpdateRatingForm {
 
     private Long id;
-    private Long userId;
     private int rating;
 
     @JsonCreator
-    public UpdateRatingForm(@JsonProperty("id")Long id,@JsonProperty("userId") Long userId , @JsonProperty("rating")int rating) {
+    public UpdateRatingForm(@JsonProperty("id") Long id, @JsonProperty("rating") int rating) {
 
-        this.userId = userId;
         this.id = id;
         this.rating = rating;
     }
@@ -23,14 +21,6 @@ public class UpdateRatingForm {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public int getRating() {
